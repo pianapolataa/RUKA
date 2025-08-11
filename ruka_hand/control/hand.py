@@ -12,14 +12,6 @@ from ruka_hand.utils.constants import (
 from ruka_hand.utils.dynamixel_util import *
 from ruka_hand.utils.file_ops import get_repo_root
 
-"""port: The Dynamixel device to talk to. e.g.
-                - Linux: /dev/ttyUSB0
-                - Mac: /dev/tty.usbserial-*
-                - Windows: COM1
-"""
-# PORT = "/dev/tty.usbserial-FT8ISQ5P"
-# PORT = "/dev/ttyUSB0"
-# PORT = "/dev/ttyUSB0"
 
 # PID Gains
 MCP_D_GAIN = 1000
@@ -54,26 +46,33 @@ class Hand:
         self.goal_velocity = 400
         self.operating_mode = 5  # 5: current-based position control
 
-        # These should be the values you get from running robot_hand.utils.calibration and python -m robot_hand.utils.tension respectively
         repo_root = get_repo_root()
         if hand_type == "right":
-            if os.path.exists(f"{repo_root}/motor_limits/right_motor_limits.npy"):
+            if os.path.exists(f"{repo_root}/motor_limits/right_curl_limits.npy"):
                 self.curled_bound = np.load(
-                    f"{repo_root}/motor_limits/right_motor_limits.npy"
+                    f"{repo_root}/motor_limits/right_curl_limits.npy"
                 )
             else:
                 self.curled_bound = np.ones(11) * MOTOR_RANGES_RIGHT
-            self.tensioned_pos = self.curled_bound - MOTOR_RANGES_RIGHT
+            tens_path = f"{repo_root}/motor_limits/right_tension_limits.npy"
+            if os.path.exists(tens_path):
+                self.tensioned_pos = np.load(tens_path)
+            else:
+                self.tensioned_pos = self.curled_bound - MOTOR_RANGES_RIGHT
 
             self.min_lim, self.max_lim = self.tensioned_pos, self.curled_bound
         elif hand_type == "left":
-            if os.path.exists(f"{repo_root}/motor_limits/left_motor_limits.npy"):
+            if os.path.exists(f"{repo_root}/motor_limits/left_curl_limits.npy"):
                 self.curled_bound = np.load(
-                    f"{repo_root}/motor_limits/left_motor_limits.npy"
+                    f"{repo_root}/motor_limits/left_curl_limits.npy"
                 )
             else:
                 self.curled_bound = 4000 - np.ones(11) * MOTOR_RANGES_LEFT
-            self.tensioned_pos = self.curled_bound + MOTOR_RANGES_LEFT
+            tens_path = f"{repo_root}/motor_limits/left_tension_limits.npy"
+            if os.path.exists(tens_path):
+                self.tensioned_pos = np.load(tens_path)
+            else:
+                self.tensioned_pos = self.curled_bound + MOTOR_RANGES_LEFT
 
             self.min_lim, self.max_lim = self.curled_bound, self.tensioned_pos
 

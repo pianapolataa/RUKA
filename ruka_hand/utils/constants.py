@@ -14,7 +14,7 @@ MOTOR_RANGES_RIGHT = [900, 600, 563, 1430, 930, 1340, 1058, 1000, 1270, 1200, 13
 USB_PORTS = {"left": "/dev/ttyUSB0", "right": "/dev/ttyUSB0"}
 
 # Controller constants
-HOST = "<input IP address>"
+HOST = "127.0.0.1"
 CHECKPOINT_DIR = "ruka_data/osfstorage/checkpoints"
 
 # Manus constants
