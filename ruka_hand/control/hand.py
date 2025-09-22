@@ -29,10 +29,9 @@ class Hand:
     """
 
     def __init__(self, hand_type="right"):
-        self.motors = motors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        self.DIP_PIP_motors = [4, 6, 9, 11]
-        self.MCP_motors = [5, 7, 8, 10]
-        # self.motors = motors = [1]
+        self.motors = motors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        self.DIP_PIP_motors = [14, 12, 7, 10, 6, 3]
+        self.MCP_motors = [8, 9, 11, 4, 5, 2, 1, 15, 16, 13]
         self.port = USB_PORTS[hand_type]
         self.dxl_client = DynamixelClient(motors, self.port)
         self.dxl_client.connect()
@@ -48,19 +47,10 @@ class Hand:
 
         repo_root = get_repo_root()
         if hand_type == "right":
-            if os.path.exists(f"{repo_root}/motor_limits/right_curl_limits.npy"):
-                self.curled_bound = np.load(
-                    f"{repo_root}/motor_limits/right_curl_limits.npy"
-                )
-            else:
-                self.curled_bound = np.ones(11) * MOTOR_RANGES_RIGHT
-            tens_path = f"{repo_root}/motor_limits/right_tension_limits.npy"
-            if os.path.exists(tens_path):
-                self.tensioned_pos = np.load(tens_path)
-            else:
-                self.tensioned_pos = self.curled_bound - MOTOR_RANGES_RIGHT
-
-            self.min_lim, self.max_lim = self.tensioned_pos, self.curled_bound
+            self.curled_bound = np.array([2020, 2585, 1750, 1930, 2020, 2900, 1680, 2020, 1900, 3110, 2960, 1800, 900, 1650, 1700, 2350])
+            self.tensioned_pos = np.array([2650, 2170, 2650, 2120, 2500, 1850, 2600, 2200, 2430, 2050, 2350, 2100, 1850, 2250, 2300, 2350])
+            self.min_lim = np.minimum(self.tensioned_pos, self.curled_bound)
+            self.max_lim = np.maximum(self.tensioned_pos, self.curled_bound) 
         elif hand_type == "left":
             if os.path.exists(f"{repo_root}/motor_limits/left_curl_limits.npy"):
                 self.curled_bound = np.load(
