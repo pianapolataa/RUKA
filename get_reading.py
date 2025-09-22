@@ -11,7 +11,7 @@ def angle_between(v1, v2):
     dot = np.clip(np.dot(v1, v2), -1.0, 1.0)
     return np.arccos(dot)
 
-image_path = "img3.jpg" 
+image_path = "img.jpg" 
 image_bgr = cv2.imread(image_path)
 if image_bgr is None:
     raise FileNotFoundError(f"Could not load image from {image_path}")
