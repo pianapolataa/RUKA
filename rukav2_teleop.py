@@ -30,14 +30,14 @@ class RUKAv2Handler:
         """
 
         wrist = points[0]
-        index_mcp = points[5]
-        pinky_mcp = points[17]
+        index_mcp = points[6]
+        pinky_mcp = points[16]
         middle_mcp = points[9]
-        ring_mcp = points[13]
-        thumb_cmc = points[1]
-        thumb_mcp = points[2] 
-        thumb_ip  = points[3]
-        thumb_tip = points[4] 
+        ring_mcp = points[12]
+        thumb_cmc = points[3]
+        thumb_mcp = points[4] 
+        thumb_ip  = points[5]
+        thumb_tip = points[19] 
         horiz = index_mcp - ring_mcp 
         horiz = horiz / np.linalg.norm(horiz)
         palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
@@ -68,10 +68,10 @@ class RUKAv2Handler:
             }
         }
         finger_joints = {
-            "index": [5,6,7,8],
-            "middle": [9,10,11,12],
-            "ring": [13,14,15,16],
-            "pinky": [17,18,19,20]
+            "index": [6, 7, 8, 20],
+            "middle": [9, 10, 11, 21],
+            "ring": [12, 13, 14, 22],
+            "pinky": [16, 17, 18, 23],
         }
 
         for finger, idxs in finger_joints.items():
