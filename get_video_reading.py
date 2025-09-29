@@ -15,6 +15,8 @@ def angle_between(v1, v2):
 class HandReader:
     def __init__(self, cam_index=1):
         self.cap = cv2.VideoCapture(cam_index)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
         self.mp_hands = mp.solutions.hands
         self.mp_drawing = mp.solutions.drawing_utils
         self.hands = self.mp_hands.Hands(
@@ -26,8 +28,13 @@ class HandReader:
         self.initial_wrist_axis = None
         self.initial_palm_normal = None
         self.initial_horiz = None
+        self.frame_cnt = 0
 
     def get_motor_positions(self):
+        self.frame_cnt += 1
+        if (self.frame_cnt % 5 != 0):
+            return None, None
+        
         # get one frame, return motor_positions or None if no hand
         success, frame = self.cap.read()
         if not success:
