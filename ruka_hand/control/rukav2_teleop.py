@@ -1,4 +1,3 @@
-# RUKAv2Handler.py
 import numpy as np
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
