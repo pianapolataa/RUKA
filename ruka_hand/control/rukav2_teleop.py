@@ -28,15 +28,15 @@ class RUKAv2Handler:
         Returns: joint angles array (16,)
         """
 
-        wrist = points[0]
-        index_mcp = points[6]
-        pinky_mcp = points[16]
-        middle_mcp = points[9]
-        ring_mcp = points[12]
-        thumb_cmc = points[3]
-        thumb_mcp = points[4] 
-        thumb_ip  = points[5]
-        thumb_tip = points[19] 
+        wrist = points[0][0]
+        index_mcp = points[1][1]
+        pinky_mcp = points[4][1]
+        middle_mcp = points[2][1]
+        ring_mcp = points[3][1]
+        thumb_cmc = points[0][1]
+        thumb_mcp = points[0][2]
+        thumb_ip  = points[0][3]
+        thumb_tip = points[0][4]
         horiz = index_mcp - ring_mcp 
         horiz = horiz / np.linalg.norm(horiz)
         palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
@@ -67,17 +67,17 @@ class RUKAv2Handler:
             }
         }
         finger_joints = {
-            "index": [6, 7, 8, 20],
-            "middle": [9, 10, 11, 21],
-            "ring": [12, 13, 14, 22],
-            "pinky": [16, 17, 18, 23],
+            "index": 1,
+            "middle": 2,
+            "ring": 3,
+            "pinky": 4,
         }
 
-        for finger, idxs in finger_joints.items():
+        for finger, id in finger_joints.items():
             finger_flexion = []
-            mcp = points[idxs[0]]
-            pip = points[idxs[1]]
-            v1 = points[10] - points[9]
+            mcp = points[id][1]
+            pip = points[id][2]
+            v1 = points[2][2] - points[2][1]
             v2 = pip - mcp
             v1_proj = v1 - np.dot(v1, palm_normal) * palm_normal
             v2_proj = v2 - np.dot(v2, palm_normal) * palm_normal
@@ -86,8 +86,8 @@ class RUKAv2Handler:
             v1 = mcp - wrist
             finger_flexion.append(np.degrees(angle_between(v1, v2)))
 
-            v1 = points[idxs[1]] - points[idxs[0]]
-            v2 = points[idxs[2]] - points[idxs[1]]
+            v1 = pip - mcp
+            v2 = points[id][3] - pip
             finger_flexion.append(np.degrees(angle_between(v1, v2)))
 
             angles[finger] = {"flexion": finger_flexion, "sideways_mcp": sideways_angle}
