@@ -147,6 +147,8 @@ class RUKAv2Handler:
         joint_angles = self.compute_joint_angles(points_24)
         motor_positions = self.compute_motor_pos(joint_angles)
         curr_pos = self.hand.read_pos()
+        print(motor_positions)
+        input()
         move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=traj_len)
 
     def close(self):
