@@ -134,6 +134,10 @@ class RUKAv2Handler:
     
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
+        test_pos[8] = test_pos[8] * (1 + 0.017 * test_pos[8])
+        test_pos[10] = test_pos[10] * (1 + 0.017 * test_pos[10])
+        test_pos[4] = test_pos[4] * (1 + 0.017 * test_pos[4])
+        test_pos[0] = test_pos[0] * (1 + 0.017 * test_pos[0])
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
