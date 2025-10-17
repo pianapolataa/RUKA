@@ -12,7 +12,7 @@ def angle_between(v1, v2):
 
 
 min_deg = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -25, 0], dtype=float)
-max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 50], dtype=float)
+max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 55], dtype=float)
 
 class RUKAv2Handler:
     def __init__(self, hand_type="right"):
