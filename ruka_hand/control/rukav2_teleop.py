@@ -110,6 +110,8 @@ class RUKAv2Handler:
         v1_proj = v1 - np.dot(v1, self.initial_horiz) * self.initial_horiz
         v2_proj = v2 - np.dot(v2, self.initial_horiz) * self.initial_horiz
         pitch = np.degrees(angle_between(v1_proj, v2_proj))
+        if np.dot(np.cross(v2_proj, v1_proj), self.initial_horiz) < 0:
+            pitch = 0
         angles["wrist"] = {"yaw": yaw, "pitch": pitch}
 
         motor_positions = np.zeros(16)
