@@ -140,6 +140,12 @@ class RUKAv2Handler:
         test_pos[10] = test_pos[10] * (1 + 0.02 * test_pos[10])
         test_pos[4] = test_pos[4] * (1 + 0.02 * test_pos[4])
         test_pos[0] = test_pos[0] * (1 + 0.02 * test_pos[0])
+
+        test_pos[6] = test_pos[6] - 0.1 * test_pos[8]
+        test_pos[9] = test_pos[9] - 0.1 * test_pos[10]
+        test_pos[5] = test_pos[5] - 0.1 * test_pos[4]
+        test_pos[2] = test_pos[2] - 0.1 * test_pos[0]
+
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
