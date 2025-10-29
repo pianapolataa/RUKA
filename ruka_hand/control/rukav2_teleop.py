@@ -155,11 +155,10 @@ class RUKAv2Handler:
         positions[14] = 1990 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
         return positions
 
-    def step(self, points_24, traj_len=30):
+    def get_command(self, points_24):
         joint_angles = self.compute_joint_angles(points_24)
         motor_positions = self.compute_motor_pos(joint_angles)
-        curr_pos = self.hand.read_pos()
-        move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=traj_len)
+        return motor_positions
 
     def close(self):
         self.hand.close()
