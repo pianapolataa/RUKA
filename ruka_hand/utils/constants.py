@@ -13,7 +13,7 @@ FINGER_NAMES_TO_MOTOR_IDS = {
 FINGER_NAMES_TO_MANUS_IDS = {"Thumb": 0, "Index": 1, "Middle": 2, "Ring": 3, "Pinky": 4}
 MOTOR_RANGES_LEFT = [724, 600, 563, 1230, 930, 1240, 930, 1000, 1270, 1100, 1100]
 MOTOR_RANGES_RIGHT = [900, 600, 563, 1430, 930, 1340, 1058, 1000, 1270, 1200, 1300]
-USB_PORTS = {"left": "/dev/ttyUSB0", "right": "/dev/ttyUSB0"} #/dev/tty.usbserial-FTAA0B7K # /dev/ttyUSB1
+USB_PORTS = {"left": "/dev/ttyUSB0", "right": "/dev/ttyUSB1"} #/dev/tty.usbserial-FTAA0B7K # /dev/ttyUSB1
 
 # Controller constants
 HOST = "127.0.0.1"
