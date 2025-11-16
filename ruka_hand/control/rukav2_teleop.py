@@ -163,5 +163,10 @@ class RUKAv2Handler:
         motor_positions = self.compute_motor_pos(joint_angles)
         return motor_positions
 
+    def reset(self):
+        motor_positions = self.compute_motor_pos(np.zeros(16))
+        curr_pos = self.hand.read_pos()
+        move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=35)
+
     def close(self):
         self.hand.close()
