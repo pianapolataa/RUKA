@@ -18,6 +18,18 @@ max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25,
 
 def normalize_to_motor(test_pos):
     test_pos = np.array(test_pos, dtype=float)
+    test_pos[8] = test_pos[8] * (1 + 0.02 * test_pos[8])
+    test_pos[10] = test_pos[10] * (1 + 0.02 * test_pos[10])
+    test_pos[4] = test_pos[4] * (1 + 0.02 * test_pos[4])
+    test_pos[0] = test_pos[0] * (1 + 0.02 * test_pos[0])
+
+    test_pos[6] = test_pos[6] - 0.07 * test_pos[8]
+    test_pos[9] = test_pos[9] - 0.07 * test_pos[10]
+    test_pos[5] = test_pos[5] - 0.07 * test_pos[4]
+    test_pos[2] = test_pos[2] - 0.07 * test_pos[0]
+
+    test_pos[13] = (test_pos[13] - 30) * 2 # change thumb underestimation
+    test_pos[12] = test_pos[12] * 1.17 # change thumb angle
     print(test_pos)
     clamped = np.clip(test_pos, min_deg, max_deg)
     normed = clamped / (max_deg - min_deg)
