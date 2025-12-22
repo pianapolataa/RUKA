@@ -41,6 +41,7 @@ def normalize_to_motor(test_pos):
     return positions
 
 reader = HandReader()
+first_pos = True
 
 try:
     while True:
@@ -52,7 +53,11 @@ try:
                 des_pos = normalize_to_motor(motor_positions)
                 print(des_pos)
                 # input()
-                move_to_pos(curr_pos=curr_pos, des_pos=des_pos, hand=hand, traj_len=20)
+                if (first_pos):
+                    move_to_pos(curr_pos=curr_pos, des_pos=des_pos, hand=hand, traj_len=50)
+                    first_pos = False
+                else:
+                    move_to_pos(curr_pos=curr_pos, des_pos=des_pos, hand=hand, traj_len=20)
             except Exception as e:
                 print(f"Error: {e}")
 
