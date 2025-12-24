@@ -14,7 +14,7 @@ hand = Hand(args.hand_type)
 
 # # Min/max degrees for each motor
 min_deg = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -25, 0], dtype=float)
-max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 50], dtype=float)
+max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 60], dtype=float)
 
 def normalize_to_motor(test_pos):
     test_pos = np.array(test_pos, dtype=float)
