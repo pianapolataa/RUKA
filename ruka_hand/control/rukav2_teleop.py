@@ -148,6 +148,10 @@ class RUKAv2Handler:
 
         test_pos[13] = (test_pos[13] - 45) * 2 # change thumb underestimation
         test_pos[12] = test_pos[12] * 1.17 # change thumb angle
+        
+        test_pos[1] = test_pos[1] * 1.7
+        test_pos[7] = test_pos[7] * 1.7
+        test_pos[3] = test_pos[3] * 1.7
         # print(test_pos[12])
 
         clamped = np.clip(test_pos, min_deg, max_deg)
