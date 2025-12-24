@@ -40,7 +40,7 @@ class Hand:
 
         # Paramaters for initalization
         self.hand_type = hand_type
-        self.curr_lim = 900
+        self.curr_lim = 1100
         self.temp_lim = 60
         self.goal_velocity = 400
         self.operating_mode = 5  # 5: current-based position control
