@@ -146,8 +146,8 @@ class RUKAv2Handler:
         test_pos[5] = test_pos[5] - 0.07 * test_pos[4]
         test_pos[2] = test_pos[2] - 0.07 * test_pos[0]
 
-        test_pos[13] = (test_pos[13]) / 2 # change thumb underestimation
-        test_pos[12] = test_pos[12] * 1.27 # change thumb angle
+        test_pos[13] = (test_pos[13]) / 1 # change thumb underestimation
+        test_pos[12] = test_pos[12] * 1.7 # change thumb angle
         
         test_pos[1] = test_pos[1] * 1.7
         test_pos[7] = test_pos[7] * 1.7
