@@ -45,7 +45,7 @@ class RUKAv2Handler:
         wrist_axis = (ring_mcp + middle_mcp) / 2 - wrist
         wrist_axis = wrist_axis / np.linalg.norm(wrist_axis)
         v1 = wrist_axis
-        v2 = thumb_ip - thumb_cmc
+        v2 = thumb_ip - thumb_mcp
         v1_proj = v1 - np.dot(v1, palm_normal) * palm_normal
         v2_proj = v2 - np.dot(v2, palm_normal) * palm_normal
         thumb_ip_flex = 90 - np.degrees(angle_between(v1_proj, v2_proj))
