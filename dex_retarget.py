@@ -1,0 +1,125 @@
+
+import cv2
+import mediapipe as mp
+import numpy as np
+import pybullet as p
+import pybullet_data
+import time
+from dex_retargeting.retargeting_config import RetargetingConfig
+
+def apply_offset(pos, orn, offset):
+    rot_matrix = np.array(p.getMatrixFromQuaternion(orn)).reshape(3, 3)
+    world_offset = rot_matrix.dot(offset)
+    return pos + world_offset
+
+def main():
+    # 1. SETUP PYBULLET
+    client_id = p.connect(p.GUI)
+    p.setAdditionalSearchPath(pybullet_data.getDataPath())
+    p.setGravity(0, 0, 0) # No gravity so hand doesn't droop
+    robot_id = p.loadURDF("assets/robot.urdf", useFixedBase=True)
+
+    # Map Joints
+    joint_map = {}
+    for i in range(p.getNumJoints(robot_id)):
+        info = p.getJointInfo(robot_id, i)
+        if info[2] != p.JOINT_FIXED:
+            joint_map[info[1].decode("utf-8")] = i
+
+    mcp_offsets = {
+        "wrist": [0, 0, -0.015],
+        "index": [0, 0, -0.008],
+        "pinky": [0, 0, 0.006]
+    }
+    
+    state = p.getLinkState(robot_id, 1)
+    link_pos = state[4]
+    link_orn = state[5]
+    wrist_pos = apply_offset(link_pos, link_orn, mcp_offsets["wrist"])
+    state = p.getLinkState(robot_id, 2)
+    link_pos = state[4]
+    link_orn = state[5]
+    index_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["index"])
+    state = p.getLinkState(robot_id, 13)
+    link_pos = state[4]
+    link_orn = state[5]
+    pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["index"])
+    hand_width = np.linalg.norm(index_mcp_pos - wrist_pos)
+
+    init_x_axis = index_mcp_pos - wrist_pos 
+    init_z_axis = np.cross(index_mcp_pos - wrist_pos, pinky_mcp_pos - wrist_pos) 
+    init_y_axis = np.cross(init_z_axis, init_x_axis)
+    init_x_axis = init_x_axis / np.linalg.norm(init_x_axis)
+    init_y_axis = init_y_axis / np.linalg.norm(init_y_axis)
+    init_z_axis = init_z_axis / np.linalg.norm(init_z_axis)
+    R_robot = np.stack([init_x_axis, init_y_axis, init_z_axis], axis=1)
+
+
+    # 2. SETUP RETARGETING
+    config_path = "assets/dex_retarget.yml"
+    retargeting = RetargetingConfig.load_from_file(config_path).build()
+    target_joint_names = retargeting.optimizer.robot.dof_joint_names
+
+    # 3. SETUP MEDIAPIPE
+    mp_hands = mp.solutions.hands
+    mp_draw = mp.solutions.drawing_utils
+    cap = cv2.VideoCapture(1)
+
+    with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
+        while cap.isOpened():
+            p.stepSimulation()
+            ret, frame = cap.read()
+            if not ret: break
+            
+            frame = cv2.flip(frame, 1)
+            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            results = hands.process(rgb)
+
+            if results.multi_hand_world_landmarks:
+                hand_landmarks = results.multi_hand_world_landmarks[0]
+                
+                # Raw Points (21, 3)
+                points = np.array([[lm.x, lm.y, lm.z] for lm in hand_landmarks.landmark])
+                points = points - points[0]
+                wrist = points[0]
+                index_mcp = points[5]
+                pinky_mcp = points[17]
+
+                palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
+                palm_normal = palm_normal / np.linalg.norm(palm_normal)
+                x_axis = index_mcp - wrist
+                y_axis = np.cross(palm_normal, x_axis)
+                x_axis = x_axis / np.linalg.norm(x_axis)
+                y_axis = y_axis / np.linalg.norm(y_axis)
+                R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  
+                width = np.linalg.norm(index_mcp - wrist)
+
+                joint_pos = (hand_width / width) * (points @ R_hand  @ R_robot.T) + wrist_pos
+
+
+                # Vector Calc
+                indices = retargeting.optimizer.target_link_human_indices
+                origin_indices = indices[0, :]
+                task_indices = indices[1, :]
+                ref_value = joint_pos[task_indices, :] - joint_pos[origin_indices, :]
+
+                # Retarget
+                robot_q = retargeting.retarget(ref_value)
+
+                # Apply to PyBullet
+                for i, joint_name in enumerate(target_joint_names):
+                    if joint_name in joint_map:
+                        p.resetJointState(robot_id, joint_map[joint_name], robot_q[i])
+                
+                mp_draw.draw_landmarks(frame, results.multi_hand_landmarks[0], mp_hands.HAND_CONNECTIONS)
+
+            cv2.imshow("Webcam Feed", frame)
+            if cv2.waitKey(1) & 0xFF == 27: break
+            time.sleep(1./60.)
+
+    p.disconnect()
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
