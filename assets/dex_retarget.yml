@@ -1,6 +1,7 @@
 retargeting:
   type: vector 
   urdf_path: "assets/robot.urdf" 
+  low_pass_alpha: 1.0
   target_origin_link_names:
     - "backhand"
     - "backhand"
@@ -11,18 +12,25 @@ retargeting:
     - "backhand"
     - "backhand"
     - "backhand"
+    - "thumb_actual_tip"
+    - "thumb_actual_tip"
+    - "thumb_actual_tip"
+    - "thumb_actual_tip"
   target_task_link_names:
     - "thumb_actual_tip"
     - "index_actual_tip"
     - "middle_actual_tip"
     - "ring_actual_tip"
     - "pinky_actual_tip"
-
     - "pip"
     - "pip_2"
     - "pip_3"
     - "pinky___joint_2"
+    - "index_actual_tip"
+    - "middle_actual_tip"
+    - "ring_actual_tip"
+    - "pinky_actual_tip"
   # MediaPipe indices
   target_link_human_indices:
-    - [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    - [4, 8, 12, 16, 20, 6, 10, 14, 18]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4]
+    - [4, 8, 12, 16, 20, 6, 10, 14, 18, 8, 12, 16, 20]

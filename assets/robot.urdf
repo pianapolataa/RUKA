@@ -350,8 +350,8 @@
     <origin xyz="-0.0371598 -0.0783979 -0.0780332" rpy="2.74947 -0.561588 2.06824"/>
     <parent link="backhand"/>
     <child link="knuclke_index_ext"/>
-    <axis xyz="0 0 -1"/>
-    <limit effort="10" velocity="10" lower="-0.261799" upper="0.201799"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-0.191799" upper="0.201799"/>
   </joint>
   <!-- Link mcp_2 -->
   <link name="mcp_2">
@@ -620,8 +620,8 @@
     <origin xyz="0.000394141 -0.0834707 -0.0760888" rpy="0.286322 -0.618371 0.917012"/>
     <parent link="backhand"/>
     <child link="knuckle_ring_ext"/>
-    <axis xyz="0 0 -1"/>
-    <limit effort="10" velocity="10" lower="-0.301426" upper="0.201426"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-0.301426" upper="0.301426"/>
   </joint>
   <!-- Link knuckle_ring_ext_2 -->
   <link name="knuckle_ring_ext_2">
@@ -787,8 +787,8 @@
     <origin xyz="0.0224606 -0.0838956 -0.0700717" rpy="-0.203681 0.653612 -2.17909"/>
     <parent link="backhand"/>
     <child link="knuckle_ring_ext_2"/>
-    <axis xyz="0 0 -1"/>
-    <limit effort="10" velocity="10" lower="-0.298132" upper="0.298132"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10" lower="-0.298132" upper="0.598132"/>
   </joint>
   <!-- Link thumb___joint_1 -->
   <link name="thumb___joint_1">
@@ -951,7 +951,7 @@
   <joint name="index_actual_tip_joint" type="fixed">
     <parent link="finger___joint_3"/> 
     <child link="index_actual_tip"/>
-    <origin xyz="-0.022 0 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.017 0 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="middle_actual_tip">
@@ -963,7 +963,7 @@
   <joint name="middle_actual_tip_joint" type="fixed">
     <parent link="finger___joint_3_2"/> 
     <child link="middle_actual_tip"/>
-    <origin xyz="-0.02 0.002 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.015 0.002 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="ring_actual_tip">
@@ -975,7 +975,7 @@
   <joint name="ring_actual_tip_joint" type="fixed">
     <parent link="finger___joint_3_3"/> 
     <child link="ring_actual_tip"/>
-    <origin xyz="-0.02 0.002 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.015 0.002 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="pinky_actual_tip">
@@ -987,7 +987,7 @@
   <joint name="pinky_actual_tip_joint" type="fixed">
     <parent link="pinky___joint_3"/> 
     <child link="pinky_actual_tip"/>
-    <origin xyz="-0.017 0.002 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.012 0.002 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="thumb_actual_tip">
