@@ -43,8 +43,8 @@ def main():
     state = p.getLinkState(robot_id, 13)
     link_pos = state[4]
     link_orn = state[5]
-    pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["index"])
-    hand_width = np.linalg.norm(index_mcp_pos - wrist_pos)
+    pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["pinky"])
+    hand_width = (np.linalg.norm(pinky_mcp_pos - wrist_pos) + 2 * np.linalg.norm(index_mcp_pos - wrist_pos)) / 3
 
     init_x_axis = index_mcp_pos - wrist_pos 
     init_z_axis = np.cross(index_mcp_pos - wrist_pos, pinky_mcp_pos - wrist_pos) 
@@ -92,7 +92,7 @@ def main():
                 x_axis = x_axis / np.linalg.norm(x_axis)
                 y_axis = y_axis / np.linalg.norm(y_axis)
                 R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  
-                width = np.linalg.norm(index_mcp - wrist)
+                width = (2 * np.linalg.norm(index_mcp - wrist) + np.linalg.norm(pinky_mcp - wrist)) / 3
 
                 joint_pos = (hand_width / width) * (points @ R_hand  @ R_robot.T) + wrist_pos
 

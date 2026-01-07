@@ -1,18 +1,16 @@
 retargeting:
-  # "vector" is best for hands (matches finger direction/shape, ignores size differences)
-  # "position" is strict XYZ matching (good if hand & robot are same size)
   type: vector 
-  
-  # Path to your URDF file
   urdf_path: "assets/robot.urdf" 
-  
   target_origin_link_names:
     - "backhand"
     - "backhand"
     - "backhand"
     - "backhand"
     - "backhand"
-
+    - "backhand"
+    - "backhand"
+    - "backhand"
+    - "backhand"
   target_task_link_names:
     - "thumb_actual_tip"
     - "index_actual_tip"
@@ -20,11 +18,11 @@ retargeting:
     - "ring_actual_tip"
     - "pinky_actual_tip"
 
-
+    - "pip"
+    - "pip_2"
+    - "pip_3"
+    - "pinky___joint_2"
   # MediaPipe indices
   target_link_human_indices:
-    - [0, 0, 0, 0, 0]
-    - [4, 8, 12, 16, 20]
-
-    # If your robot hand is huge or tiny, you can add a scale factor (1.0 is default)
-    # scaling_factor: 1.0
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [4, 8, 12, 16, 20, 6, 10, 14, 18]
