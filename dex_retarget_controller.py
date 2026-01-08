@@ -57,8 +57,8 @@ class DexRukav2Handler:
         link_pos = state[4]
         link_orn = state[5]
         pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["pinky"])
-        # self.hand_width = (np.linalg.norm(pinky_mcp_pos - self.wrist_pos) + 2 * np.linalg.norm(index_mcp_pos - self.wrist_pos)) / 3
-        self.hand_width = np.linalg.norm(pinky_mcp_pos - self.wrist_pos)
+        self.hand_width = (np.linalg.norm(pinky_mcp_pos - self.wrist_pos) + 2 * np.linalg.norm(index_mcp_pos - self.wrist_pos)) / 3
+        # self.hand_width = np.linalg.norm(pinky_mcp_pos - self.wrist_pos)
 
         init_x_axis = index_mcp_pos - self.wrist_pos 
         init_z_axis = np.cross(index_mcp_pos - self.wrist_pos, pinky_mcp_pos - self.wrist_pos) 
@@ -92,7 +92,7 @@ class DexRukav2Handler:
     def to_robot_frame(self, positions, x_axis, y_axis, palm_normal, norm_len):
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
         scale_factor = self.hand_width / norm_len
-        rel_hand_frame = positions @ R_hand  @ self.R_robot.T + self.wrist_pos
+        rel_hand_frame = scale_factor * (positions @ R_hand  @ self.R_robot.T) + self.wrist_pos
         return rel_hand_frame
 
     def get_finger_angles(self, target_points):
@@ -134,8 +134,8 @@ class DexRukav2Handler:
         y_axis = np.cross(palm_normal, x_axis)
         x_axis = x_axis / np.linalg.norm(x_axis)
         y_axis = y_axis / np.linalg.norm(y_axis)
-        # norm_len = (2 * np.linalg.norm(index_mcp - wrist) + np.linalg.norm(pinky_mcp - wrist)) / 3
-        norm_len = np.linalg.norm(pinky_mcp - wrist)
+        norm_len = (2 * np.linalg.norm(index_mcp - wrist) + np.linalg.norm(pinky_mcp - wrist)) / 3
+        # norm_len = np.linalg.norm(pinky_mcp - wrist)
         transformed_fingertips = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
         finger_deg = self.get_finger_angles(transformed_fingertips)
         
@@ -157,9 +157,9 @@ class DexRukav2Handler:
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        test_pos[12] = test_pos[12] * 1.3
+        print(test_pos[8])
+        test_pos[12] = test_pos[12] * 1.1 + 20
         clamped = np.clip(test_pos, min_deg, max_deg)
-        print(clamped)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
         positions[1] = 2285 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])

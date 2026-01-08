@@ -47,8 +47,8 @@ class Hand:
 
         repo_root = get_repo_root()
         if hand_type == "right":
-            self.curled_bound = np.array([2070, 2540, 1717, 1930, 1930, 2900, 1680, 2070, 1990, 3110, 2830, 1370, 921, 1430, 1617, 2455])
-            self.tensioned_pos = np.array([2590, 2200, 2550, 2060, 2590, 1920, 2600, 2270, 2400, 2253, 2260, 1585, 1747, 2080, 2417, 1810])
+            self.curled_bound = np.array([1850, 2540, 1617, 1960, 1730, 2900, 1520, 2070, 1643, 3229, 3237, 1300, 770, 1430, 1617, 2455])
+            self.tensioned_pos = np.array([2400, 2200, 2550, 2160, 2320, 1920, 2500, 2270, 2124, 2400, 2521, 1540, 1470, 2080, 2417, 1810])
             self.min_lim = np.minimum(self.tensioned_pos, self.curled_bound)
             self.max_lim = np.maximum(self.tensioned_pos, self.curled_bound) 
         elif hand_type == "left":

@@ -108,7 +108,13 @@
 #                 ref_value = joint_pos[task_indices, :] - joint_pos[origin_indices, :]
 
 #                 # Retarget
-#                 robot_q = retargeting.retarget(ref_value)
+#                 lower_limits = retargeting.optimizer.robot.model.lowerPositionLimit
+#                 robot_q = retargeting.retarget(ref_value) 
+#                 diff = retargeting.retarget(ref_value) - lower_limits
+#                 joint_names = retargeting.optimizer.robot.dof_joint_names
+#                 d = dict(zip(joint_names, diff))
+#                 print(np.degrees(d["thumb_cmc"]) )          
+
 
 #                 # Apply to PyBullet
 #                 for i, joint_name in enumerate(target_joint_names):
