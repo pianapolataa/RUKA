@@ -25,6 +25,7 @@ class DexRukav2Handler:
     def __init__(self, urdf_path="assets/robot.urdf", hand_type="right"):
         self.hand_type = hand_type
         self.hand = Hand(hand_type)
+        # self.reset()
         self.initial_wrist_axis = None
         self.initial_palm_normal = None
         self.initial_horiz = None
@@ -33,7 +34,8 @@ class DexRukav2Handler:
     def set_up_dex(self, urdf_path):
         config_path = "assets/dex_retarget.yml"
         self.retargeting = RetargetingConfig.load_from_file(config_path).build()
-        self.retargeting.optimizer.opt.set_maxeval(20)
+        self.retargeting.optimizer.opt.set_maxeval(30)
+        self.retargeting.optimizer.opt.set_xtol_rel(1e-2)
         self.target_joint_names = self.retargeting.optimizer.robot.dof_joint_names
 
         client_id = p.connect(p.DIRECT)

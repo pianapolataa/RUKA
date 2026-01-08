@@ -153,10 +153,11 @@ def main():
     mp_hands = mp.solutions.hands
     mp_draw = mp.solutions.drawing_utils
     cap = cv2.VideoCapture(1)
+    first_pos = True
 
     with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7) as hands:
         while cap.isOpened():
-            p.stepSimulation()
+            # p.stepSimulation()
             ret, frame = cap.read()
             if not ret: break
             
@@ -174,7 +175,10 @@ def main():
                 command[14] = 1990
                 # print(np.array(command))
                 curr_pos = controller.hand.read_pos()
-                move_to_pos(curr_pos, command, controller.hand, traj_len=20)
+                if first_pos == True:
+                    move_to_pos(curr_pos, command, controller.hand, traj_len=35)
+                    first_pos = False
+                else: move_to_pos(curr_pos, command, controller.hand, traj_len=15)
 
             cv2.imshow("Webcam Feed", frame)
             if cv2.waitKey(1) & 0xFF == 27: break
