@@ -142,12 +142,12 @@ class DexRukav2Handler:
         finger_deg = self.get_finger_angles(transformed_fingertips)
         
         angles[7] = finger_deg['index_splay']
-        angles[8] = finger_deg['index_mcp']
+        angles[8] = finger_deg['index_mcp'] * 1.2
         angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
         angles[10] = finger_deg['mid_mcp']
         angles[9] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
         angles[3] = finger_deg['ring_splay']
-        angles[4] = finger_deg['ring_mcp']
+        angles[4] = finger_deg['ring_mcp'] * 1.1
         angles[5] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 2 / 3
         angles[1] = finger_deg['pinky_splay']
         angles[0] = finger_deg['pinky_mcp']
@@ -159,7 +159,6 @@ class DexRukav2Handler:
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        print(test_pos[8])
         test_pos[12] = test_pos[12] * 1.1 + 20
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)

@@ -33,6 +33,7 @@ def replay_motion(controller, trajectory_path="mp_trajectory.npy"):
                 first_pos = False
             else: 
                 move_to_pos(curr_pos, command, controller.hand, traj_len=10)
+                # time.sleep(0.5)
 
         print("Replay finished.")
 
