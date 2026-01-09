@@ -15,8 +15,8 @@ from ruka_hand.utils.file_ops import get_repo_root
 
 # PID Gains
 MCP_D_GAIN = 1000
-MCP_I_GAIN = 120
-MCP_P_GAIN = 900
+MCP_I_GAIN = 300
+MCP_P_GAIN = 2000
 
 DIP_PIP_D_GAIN = 960
 DIP_PIP_I_GAIN = 100
@@ -128,6 +128,15 @@ class Hand:
             ADDR_POSITION_P_GAIN,
             LEN_POSITION_P_GAIN,
         )  # Set P gain for MCP motors
+
+        # PID Gains for MCP motors
+        self.dxl_client.sync_write(
+            [9],
+            [2700],
+            ADDR_POSITION_P_GAIN,
+            LEN_POSITION_P_GAIN,
+        )  
+
         self.dxl_client.sync_write(
             self.MCP_motors,
             np.ones(len(motors)) * MCP_I_GAIN,

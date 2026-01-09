@@ -1,9 +1,9 @@
 retargeting:
   type: vector 
-  urdf_path: "assets/robot.urdf" 
+  urdf_path: "/Users/sissi/Downloads/RUKA/assets/robot.urdf" 
   low_pass_alpha: 1.0
   target_origin_link_names:
-    - "backhand"
+    - "thumb___joint_1"
     - "mcp"
     - "mcp_2"
     - "mcp_3"
@@ -34,5 +34,5 @@ retargeting:
     - "pinky_actual_tip"
   # MediaPipe indices
   target_link_human_indices:
-    - [0, 5, 9, 13, 0, 0, 5, 9, 13, 0, 4, 4, 4, 4]
+    - [2, 5, 9, 13, 0, 0, 5, 9, 13, 0, 4, 4, 4, 4]
     - [4, 8, 12, 16, 20, 3, 6, 10, 14, 18, 8, 12, 16, 20]

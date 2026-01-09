@@ -951,7 +951,7 @@
   <joint name="index_actual_tip_joint" type="fixed">
     <parent link="finger___joint_3"/> 
     <child link="index_actual_tip"/>
-    <origin xyz="-0.017 0 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.007 0 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="middle_actual_tip">
@@ -963,7 +963,7 @@
   <joint name="middle_actual_tip_joint" type="fixed">
     <parent link="finger___joint_3_2"/> 
     <child link="middle_actual_tip"/>
-    <origin xyz="-0.015 0.002 -0.004" rpy="0 0 0"/>
+    <origin xyz="-0.005 0.002 -0.004" rpy="0 0 0"/>
   </joint>
 
   <link name="ring_actual_tip">
