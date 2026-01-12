@@ -97,6 +97,7 @@ class DexRukav2Handler:
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
         scale_factor = self.hand_width / norm_len
         rel_hand_frame = scale_factor * (positions @ R_hand  @ self.R_robot.T) + self.wrist_pos
+        print(rel_hand_frame)
         return rel_hand_frame
 
     def get_finger_angles(self, target_points):
