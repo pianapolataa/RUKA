@@ -4,6 +4,7 @@ import pybullet_data
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 from dex_retargeting.retargeting_config import RetargetingConfig
+import yaml
 
 min_deg = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -25, 0], dtype=float)
 max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 60], dtype=float)
@@ -23,6 +24,8 @@ def apply_offset(pos, orn, offset):
 
 class DexRukav2Handler:
     def __init__(self, urdf_path="/Users/sissi/Downloads/RUKA/assets/robot.urdf", config_path="/Users/sissi/Downloads/RUKA/assets/dex_retarget.yml", hand_type="right"):
+        with open(self.config_path, "r") as f:
+            self.config = yaml.safe_load(f)
         self.hand_type = hand_type
         self.hand = Hand(hand_type)
         # self.reset()
