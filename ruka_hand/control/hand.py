@@ -132,7 +132,7 @@ class Hand:
         # PID Gains for MCP motors
         self.dxl_client.sync_write(
             [9],
-            [2700],
+            [2000],
             ADDR_POSITION_P_GAIN,
             LEN_POSITION_P_GAIN,
         )  
