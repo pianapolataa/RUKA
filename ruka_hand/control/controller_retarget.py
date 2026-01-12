@@ -89,17 +89,14 @@ class DexRukav2Handler:
         v1_proj = v1 - np.dot(v1, self.initial_horiz) * self.initial_horiz
         v2_proj = v2 - np.dot(v2, self.initial_horiz) * self.initial_horiz
         pitch = angle_between(v1_proj, v2_proj)
-        if np.dot(np.cross(v2_proj, v1_proj), self.initial_horiz) > 0:
+        if np.dot(np.cross(v2_proj, v1_proj), self.initial_horiz) < 0:
             pitch = 0
         return yaw, pitch
     
     def to_robot_frame(self, positions, x_axis, y_axis, palm_normal, norm_len):
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
         scale_factor = self.hand_width / norm_len
-        local_pos = positions @ R_hand
-        local_pos[:, :, 1] *= -1
-        R_hand = np.stack([x_axis, -y_axis, palm_normal], axis=1)
-        rel_hand_frame = scale_factor * (local_pos @ self.R_robot.T) + self.wrist_pos
+        rel_hand_frame = scale_factor * (positions @ R_hand @ self.R_robot.T) + self.wrist_pos
         print(rel_hand_frame)
         return rel_hand_frame
 
@@ -123,6 +120,7 @@ class DexRukav2Handler:
 
     def points_to_joint_angles(self, points):
         angles = np.zeros(16)
+        points[:, :, 1] *= -1
         points = points - points[0][0]
         wrist = points[0][0]
         index_mcp = points[1][1]
