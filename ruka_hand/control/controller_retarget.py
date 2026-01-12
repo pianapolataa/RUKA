@@ -97,7 +97,7 @@ class DexRukav2Handler:
         return rel_hand_frame
 
     def get_finger_angles(self, target_points):
-        indices = self.retargeting.optimizer.target_link_human_indices
+        indices = self.config['oculus_indices']
         origin_indices = indices[0] 
         task_indices = indices[1]
         ref_vectors = []
