@@ -89,7 +89,7 @@ class DexRukav2Handler:
         v1_proj = v1 - np.dot(v1, self.initial_horiz) * self.initial_horiz
         v2_proj = v2 - np.dot(v2, self.initial_horiz) * self.initial_horiz
         pitch = angle_between(v1_proj, v2_proj)
-        if np.dot(np.cross(v2_proj, v1_proj), self.initial_horiz) < 0:
+        if np.dot(np.cross(v2_proj, v1_proj), self.initial_horiz) > 0:
             pitch = 0
         return yaw, pitch
     
@@ -173,6 +173,7 @@ class DexRukav2Handler:
         joint_angles = self.points_to_joint_angles(points_24)
         motor_positions = self.compute_motor_pos(joint_angles)
         motor_positions = np.clip(motor_positions, np.minimum(self.hand.curled_bound, self.hand.tensioned_pos), np.maximum(self.hand.curled_bound, self.hand.tensioned_pos))
+        print(motor_positions)
         return motor_positions
 
     def reset(self):
