@@ -12,6 +12,7 @@ static_data = np.array([
     [[ 0.,   -0.04,  0.04], [-0.,   -0.01,  0.14], [-0.02,  0.03,  0.13], [-0.02,  0.03,  0.1 ], [-0.01,  0.,    0.1 ]], # Ring
     [[ 0.,   -0.04,  0.04], [-0.03, -0.02,  0.13], [-0.03,  0.02,  0.12], [-0.03,  0.01,  0.1 ], [-0.02, -0.01,  0.09]]  # Pinky
 ])
+static_data[:, :, 1] *= -1
 
 def apply_offset(pos, orn, offset):
     rot_matrix = np.array(p.getMatrixFromQuaternion(orn)).reshape(3, 3)

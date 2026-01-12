@@ -96,7 +96,9 @@ class DexRukav2Handler:
     def to_robot_frame(self, positions, x_axis, y_axis, palm_normal, norm_len):
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
         scale_factor = self.hand_width / norm_len
-        rel_hand_frame = scale_factor * (positions @ R_hand  @ self.R_robot.T) + self.wrist_pos
+        local_pos = positions @ R_hand
+        local_pos[:, 0] *= -1
+        rel_hand_frame = scale_factor * (local_pos @ self.R_robot.T) + self.wrist_pos
         print(rel_hand_frame)
         return rel_hand_frame
 
