@@ -3,7 +3,6 @@ import pybullet as p
 import pybullet_data
 import time
 from dex_retargeting.retargeting_config import RetargetingConfig
-from dex_retarget_controller import DexRukav2Handler
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 from get_video_reading import HandReader
@@ -111,7 +110,7 @@ def replay_motion(trajectory_path="mp_trajectory.npy"):
                     p.resetJointState(robot_id, joint_map[dip_name], mirrored_val)
 
             p.stepSimulation()
-            time.sleep(0.2)
+            time.sleep(0.1)
         
 
         print("Replay finished.")
