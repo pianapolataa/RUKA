@@ -161,7 +161,7 @@ class DexRukav2Handler:
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        test_pos[12] = test_pos[12] * 1.1
+        test_pos[12] = test_pos[12] * 1.17
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
