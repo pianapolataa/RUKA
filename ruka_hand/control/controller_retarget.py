@@ -149,7 +149,7 @@ class DexRukav2Handler:
         # angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 1.7 / 3
         angles[6] = 0
         # angles[10] = finger_deg['mid_mcp']
-        angles[10] = finger_deg['mid_mcp'] * 1.1
+        angles[10] = finger_deg['mid_mcp']
         # angles[9] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 1.7 / 3
         angles[9] = 0
         angles[3] = finger_deg['ring_splay']
