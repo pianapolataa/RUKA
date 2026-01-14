@@ -59,7 +59,7 @@ class DexRukav2Handler:
         link_pos = state[4]
         link_orn = state[5]
         pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["pinky"])
-        self.hand_width = (np.linalg.norm(pinky_mcp_pos - self.wrist_pos) + 2 * np.linalg.norm(index_mcp_pos - self.wrist_pos)) / 3
+        self.hand_width = (0 * np.linalg.norm(pinky_mcp_pos - self.wrist_pos) + 2.5 * np.linalg.norm(index_mcp_pos - self.wrist_pos)) / 3
         # self.hand_width = np.linalg.norm(pinky_mcp_pos - self.wrist_pos)
 
         init_x_axis = index_mcp_pos - self.wrist_pos 
@@ -136,7 +136,7 @@ class DexRukav2Handler:
         y_axis = np.cross(palm_normal, x_axis)
         x_axis = x_axis / np.linalg.norm(x_axis)
         y_axis = y_axis / np.linalg.norm(y_axis)
-        norm_len = (2 * np.linalg.norm(index_mcp - wrist) + np.linalg.norm(pinky_mcp - wrist)) / 3
+        norm_len = (2.5 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
         # norm_len = np.linalg.norm(pinky_mcp - wrist)
         transformed_fingertips = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
         finger_deg = self.get_finger_angles(transformed_fingertips)
