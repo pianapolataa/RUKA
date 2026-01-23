@@ -165,7 +165,7 @@ class DexRukav2Handler:
         test_pos = np.array(test_pos, dtype=float)
         test_pos[12] = test_pos[12] * 1.17
         test_pos[7] = test_pos[7] * 2 - 20
-        test_pos[8] += 15
+        test_pos[8] += 7
         test_pos[10] -= 15
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
