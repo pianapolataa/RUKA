@@ -153,8 +153,8 @@ class DexRukav2Handler:
         angles[0] = finger_deg['pinky_mcp']
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 2 / 3
         angles[12] = finger_deg['thumb_cmc']
-        angles[13] = finger_deg['thumb_mcp'] * 1.2
-        angles[11] = finger_deg['thumb_ip']
+        angles[13] = finger_deg['thumb_mcp'] * 1.3
+        angles[11] = finger_deg['thumb_ip'] * 1.2
         return np.degrees(angles)
 
     def compute_motor_pos(self, test_pos):
