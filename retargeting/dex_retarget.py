@@ -187,7 +187,7 @@ def main():
                 if first_pos == True:
                     move_to_pos(curr_pos, command, controller.hand, traj_len=35)
                     first_pos = False
-                else: move_to_pos(curr_pos, command, controller.hand, traj_len=20)
+                else: move_to_pos(curr_pos, command, controller.hand, traj_len=10)
 
             cv2.imshow("Webcam Feed", frame)
             if cv2.waitKey(1) & 0xFF == 27: break

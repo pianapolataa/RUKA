@@ -161,6 +161,8 @@ class DexRukav2Handler:
         test_pos = np.array(test_pos, dtype=float)
         test_pos[12] = test_pos[12] * 1.1 + 20
         test_pos[7] = test_pos[7] * 2 - 20
+        test_pos[1] = test_pos[1] * 2 - 20
+        test_pos[3] = test_pos[3] * 2 - 20
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
