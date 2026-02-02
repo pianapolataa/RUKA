@@ -163,7 +163,7 @@ class DexRukav2Handler:
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        test_pos[12] = test_pos[12] * 1.17
+        test_pos[12] = test_pos[12] * 1.17 + 20
         test_pos[7] = test_pos[7] * 2 - 20
         test_pos[8] += 10
         # test_pos[10] -= 20
