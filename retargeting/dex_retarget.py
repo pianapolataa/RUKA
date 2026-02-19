@@ -5,7 +5,7 @@ import pybullet as p
 import pybullet_data
 import time
 from dex_retargeting.retargeting_config import RetargetingConfig
-from retarget_controller_mp_v1 import DexRukav2Handler
+from retargeting.dex_retarget_controller_mp_v1 import DexRukav2Handler
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 
