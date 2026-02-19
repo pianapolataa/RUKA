@@ -146,6 +146,7 @@ class DexRukav2Handler:
         return motor_positions
 
     def reset(self):
+        print("reset")
         motor_positions = self.compute_motor_pos(np.zeros(11))
         curr_pos = self.hand.read_pos()
         move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=35)
