@@ -93,7 +93,7 @@ class DexRukav2Handler:
         return dict(zip(joint_names, robot_q))
 
     def points_to_joint_angles(self, points):
-        angles = np.zeros(16)
+        angles = np.zeros(11)
         points[:, :, 1] *= -1
         points = points - points[0][0]
         wrist = points[0][0]
@@ -142,7 +142,7 @@ class DexRukav2Handler:
         return motor_positions
 
     def reset(self):
-        motor_positions = self.compute_motor_pos(np.zeros(16))
+        motor_positions = self.compute_motor_pos(np.zeros(11))
         curr_pos = self.hand.read_pos()
         move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=35)
 
