@@ -117,8 +117,6 @@ class DexRukav2Handler:
         angles[0] = finger_deg['Thumb_CMC_Joint'] * 1.3
         angles[1] = finger_deg['Thumb_MCP_Joint']
         angles[2] = finger_deg['Thumb_IP_Joint']
-
-        print(angles[0])
         return np.degrees(angles)
 
     def compute_motor_pos(self, test_pos):
@@ -130,16 +128,13 @@ class DexRukav2Handler:
 
     def get_command(self, points_24):
         joint_angles = self.points_to_joint_angles(points_24)
-        # print(joint_angles[4])
         motor_positions = self.compute_motor_pos(joint_angles)
         motor_positions = np.clip(motor_positions, np.minimum(self.hand.curled_bound, self.hand.tensioned_pos), np.maximum(self.hand.curled_bound, self.hand.tensioned_pos))
         return motor_positions
 
     def reset(self):
         motor_positions = self.compute_motor_pos(np.zeros(11))
-        print(motor_positions)
         curr_pos = self.hand.read_pos()
-        print("read")
         move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=35)
 
     def close(self):
