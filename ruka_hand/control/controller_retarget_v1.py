@@ -27,9 +27,9 @@ class DexRukav2Handler:
         with open(config_path, "r") as f:
             self.config = yaml.safe_load(f)
         self.hand_type = hand_type
-        print(self.hand_type)
+        print(self.hand_type, self.config_path)
         self.hand = Hand(hand_type)
-        # self.reset()
+        self.reset()
         self.initial_wrist_axis = None
         self.initial_palm_normal = None
         self.initial_horiz = None
@@ -126,8 +126,8 @@ class DexRukav2Handler:
         angles[9] = finger_deg['Pinky_MCP_Joint']
         angles[10] = (finger_deg['Pinky_PIP_Joint'] + finger_deg['Pinky_DIP_Joint']) * 2 / 3
         angles[0] = finger_deg['Thumb_CMC_Joint'] * 1.3
-        angles[1] = finger_deg['Thumb_MCP_Joint']
-        angles[2] = finger_deg['Thumb_IP_Joint']
+        angles[1] = finger_deg['Thumb_MCP_Joint'] * 1.2
+        angles[2] = finger_deg['Thumb_IP_Joint'] * 1.2
         return np.degrees(angles)
 
     def compute_motor_pos(self, test_pos):
