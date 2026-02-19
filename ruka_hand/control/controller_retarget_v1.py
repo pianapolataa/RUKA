@@ -27,6 +27,7 @@ class DexRukav2Handler:
         with open(config_path, "r") as f:
             self.config = yaml.safe_load(f)
         self.hand_type = hand_type
+        print(self.hand_type)
         self.hand = Hand(hand_type)
         # self.reset()
         self.initial_wrist_axis = None
