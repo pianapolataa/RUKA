@@ -123,7 +123,7 @@ class DexRukav2Handler:
         angles[8] = (finger_deg['Ring_PIP_Joint'] + finger_deg['Ring_DIP_Joint']) * 2 / 3
         angles[9] = finger_deg['Pinky_MCP_Joint']
         angles[10] = (finger_deg['Pinky_PIP_Joint'] + finger_deg['Pinky_DIP_Joint']) * 2 / 3
-        angles[0] = finger_deg['Thumb_CMC_Joint'] * 1.3
+        angles[0] = finger_deg['Thumb_CMC_Joint'] * 1.2
         angles[1] = finger_deg['Thumb_MCP_Joint'] * 1.2
         angles[2] = finger_deg['Thumb_IP_Joint'] * 1.2
         return np.degrees(angles)
