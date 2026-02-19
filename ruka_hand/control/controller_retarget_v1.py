@@ -115,6 +115,7 @@ class DexRukav2Handler:
         norm_len = (1 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
         transformed_fingertips = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
         finger_deg = self.get_finger_angles(transformed_fingertips)
+        print(finger_deg)
         
         angles[4] = finger_deg['Index_MCP_Joint']
         angles[3] = (finger_deg['Index_PIP_Joint'] + finger_deg['Index_DIP_Joint']) * 2 / 3
