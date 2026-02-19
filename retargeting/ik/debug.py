@@ -291,7 +291,7 @@ def apply_offset(pos, orn, offset):
 client_id = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setGravity(0, 0, 0) # No gravity so hand doesn't droop
-robot_id = p.loadURDF("/Users/sissi/Downloads/RUKA/assets/robot.urdf", useFixedBase=True)
+robot_id = p.loadURDF("/Users/sissi/Downloads/RUKA/assets_v1/Hand_Assembly_URDF.urdf", useFixedBase=True) # /Users/sissi/Downloads/RUKA/assets_v1/Hand_Assembly_URDF.urdf
 
 joint_name_to_index = {}
 link_name_to_index = {}
@@ -310,15 +310,12 @@ mcp_offsets = {
     "pinky": [0, 0, 0.006]
 }
 
-state = p.getLinkState(robot_id, 1)
-link_pos = state[4]
-link_orn = state[5]
-wrist_pos = apply_offset(link_pos, link_orn, mcp_offsets["wrist"])
-state = p.getLinkState(robot_id, 2)
+wrist_pos = [0, 0, 0]
+state = p.getLinkState(robot_id, 0)
 link_pos = state[4]
 link_orn = state[5]
 index_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["index"])
-state = p.getLinkState(robot_id, 13)
+state = p.getLinkState(robot_id, 12)
 link_pos = state[4]
 link_orn = state[5]
 pinky_mcp_pos = apply_offset(link_pos, link_orn, mcp_offsets["pinky"])
@@ -362,7 +359,7 @@ with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7, min_tracking_
         x_axis = x_axis / np.linalg.norm(x_axis)
         y_axis = y_axis / np.linalg.norm(y_axis)
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
-        width = (2.5 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
+        width = (3 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
 
         rel_hand_frame = (hand_width / width) * (points @ R_hand  @ R_robot.T) + wrist_pos
 

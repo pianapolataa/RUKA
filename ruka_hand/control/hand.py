@@ -29,9 +29,14 @@ class Hand:
     """
 
     def __init__(self, hand_type="right"):
-        self.motors = motors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-        self.DIP_PIP_motors = [14, 12, 7, 10, 6, 3]
-        self.MCP_motors = [8, 9, 11, 4, 5, 2, 1, 15, 16, 13]
+        if hand_type == "v1_right":
+            self.motors = motors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            self.DIP_PIP_motors = [1, 2, 3, 5, 8, 10]
+            self.MCP_motors = [0, 4, 6, 7, 9]
+        else:
+            self.motors = motors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+            self.DIP_PIP_motors = [14, 12, 7, 10, 6, 3]
+            self.MCP_motors = [8, 9, 11, 4, 5, 2, 1, 15, 16, 13]
         self.port = USB_PORTS[hand_type]
         self.dxl_client = DynamixelClient(motors, self.port)
         self.dxl_client.connect()
@@ -49,22 +54,15 @@ class Hand:
         if hand_type == "right":
             self.curled_bound = np.array([1850, 2540, 1617, 1860, 1730, 2900, 1520, 1850, 1643, 3229, 3237, 1300, 620, 1430, 1617, 2455])
             self.tensioned_pos = np.array([2400, 2140, 2550, 2160, 2320, 1920, 2500, 2100, 2200, 2300, 2550, 1540, 1400, 2080, 2417, 1810])
-            self.min_lim = np.minimum(self.tensioned_pos, self.curled_bound)
-            self.max_lim = np.maximum(self.tensioned_pos, self.curled_bound) 
         elif hand_type == "left":
-            if os.path.exists(f"{repo_root}/motor_limits/left_curl_limits.npy"):
-                self.curled_bound = np.load(
-                    f"{repo_root}/motor_limits/left_curl_limits.npy"
-                )
-            else:
-                self.curled_bound = 4000 - np.ones(11) * MOTOR_RANGES_LEFT
-            tens_path = f"{repo_root}/motor_limits/left_tension_limits.npy"
-            if os.path.exists(tens_path):
-                self.tensioned_pos = np.load(tens_path)
-            else:
-                self.tensioned_pos = self.curled_bound + MOTOR_RANGES_LEFT
+            self.curled_bound = np.array([1850, 2540, 1617, 1860, 1730, 2900, 1520, 1850, 1643, 3229, 3237, 1300, 620, 1430, 1617, 2455])
+            self.tensioned_pos = np.array([2400, 2140, 2550, 2160, 2320, 1920, 2500, 2100, 2200, 2300, 2550, 1540, 1400, 2080, 2417, 1810])
+        elif hand_type == "v1_right":
+            self.curled_bound = np.array([2416, 3327, 2435, 986, 1248, 2939, 1950, 2808, 2077, 1893, 2230])
+            self.tensioned_pos = np.array([3225, 3794, 2682, 1818, 1932, 3815, 2608, 3390, 3059, 2708, 3208])
 
-            self.min_lim, self.max_lim = self.curled_bound, self.tensioned_pos
+        self.min_lim = np.minimum(self.tensioned_pos, self.curled_bound)
+        self.max_lim = np.maximum(self.tensioned_pos, self.curled_bound) 
 
         self.init_pos = copy(self.tensioned_pos)
         self._commanded_pos = copy(self.tensioned_pos)
