@@ -27,7 +27,6 @@ class DexRukav2Handler:
         with open(config_path, "r") as f:
             self.config = yaml.safe_load(f)
         self.hand_type = hand_type
-        print(self.hand_type, self.config_path)
         self.hand = Hand(hand_type)
         self.reset()
         self.initial_wrist_axis = None
@@ -115,7 +114,6 @@ class DexRukav2Handler:
         norm_len = (1 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
         transformed_fingertips = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
         finger_deg = self.get_finger_angles(transformed_fingertips)
-        print(finger_deg)
         
         angles[4] = finger_deg['Index_MCP_Joint']
         angles[3] = (finger_deg['Index_PIP_Joint'] + finger_deg['Index_DIP_Joint']) * 2 / 3
@@ -138,16 +136,12 @@ class DexRukav2Handler:
         return positions
 
     def get_command(self, points_24):
-        print("line 139")
         joint_angles = self.points_to_joint_angles(points_24)
-        print("line 141")
         motor_positions = self.compute_motor_pos(joint_angles)
-        print("line 143")
         motor_positions = np.clip(motor_positions, np.minimum(self.hand.curled_bound, self.hand.tensioned_pos), np.maximum(self.hand.curled_bound, self.hand.tensioned_pos))
         return motor_positions
 
     def reset(self):
-        print("reset")
         motor_positions = self.compute_motor_pos(np.zeros(11))
         curr_pos = self.hand.read_pos()
         move_to_pos(curr_pos=curr_pos, des_pos=motor_positions, hand=self.hand, traj_len=35)
