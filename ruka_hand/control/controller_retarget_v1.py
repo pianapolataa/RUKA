@@ -136,8 +136,11 @@ class DexRukav2Handler:
         return positions
 
     def get_command(self, points_24):
+        print("line 139")
         joint_angles = self.points_to_joint_angles(points_24)
+        print("line 141")
         motor_positions = self.compute_motor_pos(joint_angles)
+        print("line 143")
         motor_positions = np.clip(motor_positions, np.minimum(self.hand.curled_bound, self.hand.tensioned_pos), np.maximum(self.hand.curled_bound, self.hand.tensioned_pos))
         return motor_positions
 
