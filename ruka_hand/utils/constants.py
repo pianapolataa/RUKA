@@ -13,7 +13,7 @@
 #     "Wrist": [14, 15]
 # }
 
-# BELOW IS FOR RUKA V1 RIGHT
+# BELOW IS FOR RUKA V1 LEFT
 FINGER_NAMES_TO_MOTOR_IDS = {
     "Thumb": [0, 1, 2],
     "Index": [4, 3],

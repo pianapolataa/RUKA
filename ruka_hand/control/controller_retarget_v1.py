@@ -116,13 +116,13 @@ class DexRukav2Handler:
         finger_deg = self.get_finger_angles(transformed_fingertips)
         
         angles[4] = finger_deg['Index_MCP_Joint']
-        angles[3] = (finger_deg['Index_PIP_Joint'] + finger_deg['Index_DIP_Joint']) * 2 / 3
+        angles[3] = (finger_deg['Index_PIP_Joint'] + finger_deg['Index_DIP_Joint']) * 1.7 / 3
         angles[6] = finger_deg['Middle_MCP_Joint']
-        angles[5] = (finger_deg['Middle_PIP_Joint'] + finger_deg['Middle_DIP_Joint']) * 2 / 3
+        angles[5] = (finger_deg['Middle_PIP_Joint'] + finger_deg['Middle_DIP_Joint']) * 1.7 / 3
         angles[7] = finger_deg['Ring_MCP_Joint']
-        angles[8] = (finger_deg['Ring_PIP_Joint'] + finger_deg['Ring_DIP_Joint']) * 2 / 3
+        angles[8] = (finger_deg['Ring_PIP_Joint'] + finger_deg['Ring_DIP_Joint']) * 1.7 / 3
         angles[9] = finger_deg['Pinky_MCP_Joint']
-        angles[10] = (finger_deg['Pinky_PIP_Joint'] + finger_deg['Pinky_DIP_Joint']) * 2 / 3
+        angles[10] = (finger_deg['Pinky_PIP_Joint'] + finger_deg['Pinky_DIP_Joint']) * 1.7 / 3
         angles[0] = finger_deg['Thumb_CMC_Joint'] * 1.2
         angles[1] = finger_deg['Thumb_MCP_Joint'] * 1.2
         angles[2] = finger_deg['Thumb_IP_Joint'] * 1.2
