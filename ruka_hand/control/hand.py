@@ -15,12 +15,12 @@ from ruka_hand.utils.file_ops import get_repo_root
 
 # PID Gains
 MCP_D_GAIN = 1000
-MCP_I_GAIN = 300
-MCP_P_GAIN = 2000
+MCP_I_GAIN = 500
+MCP_P_GAIN = 2500
 
 DIP_PIP_D_GAIN = 960
-DIP_PIP_I_GAIN = 100
-DIP_PIP_P_GAIN = 500
+DIP_PIP_I_GAIN = 300
+DIP_PIP_P_GAIN = 700
 
 
 class Hand:
