@@ -158,7 +158,7 @@ class DexRukav2Handler:
         angles[0] = finger_deg['pinky_mcp'] * 1.2
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 2 / 3
         angles[12] = finger_deg['thumb_cmc']
-        angles[13] = finger_deg['thumb_mcp'] * 1.5
+        angles[13] = finger_deg['thumb_mcp'] * 1.7
         angles[11] = finger_deg['thumb_ip'] * 1.3
         return np.degrees(angles)
 
@@ -166,8 +166,6 @@ class DexRukav2Handler:
         test_pos = np.array(test_pos, dtype=float)
         test_pos[12] = test_pos[12] * 1.17 + 20
         test_pos[7] = test_pos[7] * 2 - 20
-        test_pos[8] += 10
-        test_pos[10] -= 20
         test_pos[1] = test_pos[1] * 2 - 20
         test_pos[3] = test_pos[3] * 2 - 20
         clamped = np.clip(test_pos, min_deg, max_deg)
