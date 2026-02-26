@@ -4,23 +4,23 @@
 # side is self.finger[0] in index, ring, pinky
 
 # BELOW IS FOR RUKA V2 RIGHT
-# FINGER_NAMES_TO_MOTOR_IDS = {
-#     "Thumb": [12, 13, 11],
-#     "Index": [7, 8, 6],
-#     "Middle": [10, 9],
-#     "Ring": [3, 4, 5],
-#     "Pinky": [1, 0, 2],
-#     "Wrist": [14, 15]
-# }
-
-# BELOW IS FOR RUKA V1 LEFT
 FINGER_NAMES_TO_MOTOR_IDS = {
-    "Thumb": [0, 1, 2],
-    "Index": [4, 3],
-    "Middle": [6, 5],
-    "Ring": [7, 8],
-    "Pinky": [9, 10]
+    "Thumb": [12, 13, 11],
+    "Index": [7, 8, 6],
+    "Middle": [10, 9],
+    "Ring": [3, 4, 5],
+    "Pinky": [1, 0, 2],
+    "Wrist": [14, 15]
 }
+
+# # BELOW IS FOR RUKA V1 LEFT
+# FINGER_NAMES_TO_MOTOR_IDS = {
+#     "Thumb": [0, 1, 2],
+#     "Index": [4, 3],
+#     "Middle": [6, 5],
+#     "Ring": [7, 8],
+#     "Pinky": [9, 10]
+# }
 FINGER_NAMES_TO_MANUS_IDS = {"Thumb": 0, "Index": 1, "Middle": 2, "Ring": 3, "Pinky": 4}
 MOTOR_RANGES_LEFT = [724, 600, 563, 1230, 930, 1240, 930, 1000, 1270, 1100, 1100]
 MOTOR_RANGES_RIGHT = [900, 600, 563, 1430, 930, 1340, 1058, 1000, 1270, 1200, 1300]

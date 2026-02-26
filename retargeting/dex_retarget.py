@@ -5,7 +5,7 @@ import pybullet as p
 import pybullet_data
 import time
 from dex_retargeting.retargeting_config import RetargetingConfig
-from retargeting.dex_retarget_controller_mp_v1 import DexRukav2Handler
+from retargeting.dex_retarget_controller_mp import DexRukav2Handler
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 
@@ -39,7 +39,7 @@ def main():
                 if first_pos == True:
                     move_to_pos(curr_pos, command, controller.hand, traj_len=35)
                     first_pos = False
-                else: move_to_pos(curr_pos, command, controller.hand, traj_len=20)
+                else: move_to_pos(curr_pos, command, controller.hand, traj_len=10)
 
             cv2.imshow("Webcam Feed", frame)
             if cv2.waitKey(1) & 0xFF == 27: break
