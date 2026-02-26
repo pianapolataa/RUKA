@@ -22,7 +22,7 @@ retargeting:
     - "index_actual_tip"
     - "middle_actual_tip"
     - "ring_actual_tip"
-    - "pinky_actual_tip"
+    - "pinky___joint_2"
     - "thumb___joint_2"
     - "pip"
     - "pip_2"
