@@ -158,7 +158,7 @@ class DexRukav2Handler:
         angles[0] = finger_deg['pinky_mcp'] * 1.2
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 1.5 / 3
         angles[12] = finger_deg['thumb_cmc'] * 1.2
-        angles[13] = finger_deg['thumb_mcp'] * 1.7
+        angles[13] = finger_deg['thumb_mcp'] * 1.8
         angles[11] = finger_deg['thumb_ip'] * 1.3
         return np.degrees(angles)
 
