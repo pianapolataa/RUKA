@@ -132,7 +132,7 @@ class DexRukav2Handler:
         palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
         palm_normal = palm_normal / np.linalg.norm(palm_normal)
         angles[14], angles[15] = self.get_wrist_angles(horiz, wrist_axis, palm_normal)
-        angles[15] = 0
+        angles[15] = 40
 
         x_axis = index_mcp - wrist
         y_axis = np.cross(palm_normal, x_axis)
