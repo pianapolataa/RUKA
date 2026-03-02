@@ -119,7 +119,7 @@ class DexRukav2Handler:
 
     def points_to_joint_angles(self, points):
         angles = np.zeros(16)
-        points[:, :, 1] *= -1
+        # points[:, :, 1] *= -1
         points = points - points[0][0]
         wrist = points[0][0]
         index_mcp = points[1][1]
@@ -132,6 +132,7 @@ class DexRukav2Handler:
         palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
         palm_normal = palm_normal / np.linalg.norm(palm_normal)
         angles[14], angles[15] = self.get_wrist_angles(horiz, wrist_axis, palm_normal)
+        print(angles[14], angles[15])
 
         x_axis = index_mcp - wrist
         y_axis = np.cross(palm_normal, x_axis)
@@ -156,7 +157,7 @@ class DexRukav2Handler:
         angles[1] = finger_deg['pinky_splay']
         angles[0] = finger_deg['pinky_mcp'] * 1.2
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 1.5 / 3
-        angles[12] = finger_deg['thumb_cmc'] 
+        angles[12] = finger_deg['thumb_cmc'] * 1.2
         angles[13] = finger_deg['thumb_mcp'] * 1.8
         angles[11] = finger_deg['thumb_ip'] * 1.3
         return np.degrees(angles)
@@ -170,10 +171,10 @@ class DexRukav2Handler:
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 2285 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
-        positions[3] = 2026 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
-        positions[7] = 2000 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
-        positions[14] = 1990 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
+        positions[1] = 3115 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[3] = 2271 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
+        positions[7] = 1462 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
+        positions[14] = 2816 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
         return positions
 
     def get_command(self, points_24):

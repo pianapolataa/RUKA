@@ -4,7 +4,6 @@ import pybullet_data
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 from dex_retargeting.retargeting_config import RetargetingConfig
-import yaml
 
 min_deg = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -25, 0], dtype=float)
 max_deg = np.array([90, 40, 85, 15, 90, 85, 70, 20, 90, 80, 90, 90, 145, 90, 25, 60], dtype=float)
@@ -23,18 +22,17 @@ def apply_offset(pos, orn, offset):
     return pos + world_offset
 
 class DexRukav2Handler:
-    def __init__(self, urdf_path="/Users/sissi/Downloads/RUKA/assets/robot.urdf", config_path="/Users/sissi/Downloads/RUKA/assets/dex_retarget.yml", hand_type="right"):
-        with open(config_path, "r") as f:
-            self.config = yaml.safe_load(f)
+    def __init__(self, urdf_path="/Users/sissi/Downloads/RUKA/assets/robot.urdf", hand_type="left"):
         self.hand_type = hand_type
         self.hand = Hand(hand_type)
-        self.reset()
+        # self.reset()
         self.initial_wrist_axis = None
         self.initial_palm_normal = None
         self.initial_horiz = None
-        self.set_up_dex(urdf_path, config_path)
+        self.set_up_dex(urdf_path)
 
-    def set_up_dex(self, urdf_path, config_path):
+    def set_up_dex(self, urdf_path):
+        config_path = "/Users/sissi/Downloads/RUKA/assets/dex_retarget.yml"
         self.retargeting = RetargetingConfig.load_from_file(config_path).build()
         self.retargeting.optimizer.opt.set_maxeval(15)
         self.retargeting.optimizer.opt.set_xtol_rel(0)
@@ -96,21 +94,14 @@ class DexRukav2Handler:
     def to_robot_frame(self, positions, x_axis, y_axis, palm_normal, norm_len):
         R_hand = np.stack([x_axis, y_axis, palm_normal], axis=1)  # columns = hand axes
         scale_factor = self.hand_width / norm_len
-        rel_hand_frame = scale_factor * (positions @ R_hand @ self.R_robot.T) + self.wrist_pos
+        rel_hand_frame = scale_factor * (positions @ R_hand  @ self.R_robot.T) + self.wrist_pos
         return rel_hand_frame
 
     def get_finger_angles(self, target_points):
-        indices = self.config['oculus_indices']
-        origin_indices = indices[0] 
-        task_indices = indices[1]
-        ref_vectors = []
-        for i in range(len(origin_indices)):
-            f_start, j_start = origin_indices[i]
-            f_end, j_end = task_indices[i]
-            p_start = np.array(target_points[f_start][j_start])
-            p_end = np.array(target_points[f_end][j_end])
-            ref_vectors.append(p_end - p_start)
-        ref_value = np.array(ref_vectors)
+        indices = self.retargeting.optimizer.target_link_human_indices
+        origin_indices = indices[0, :]
+        task_indices = indices[1, :]
+        ref_value = target_points[task_indices, :] - target_points[origin_indices, :]
 
         lower_limits = self.retargeting.optimizer.robot.model.lowerPositionLimit
         robot_q = self.retargeting.retarget(ref_value) - lower_limits
@@ -119,12 +110,20 @@ class DexRukav2Handler:
 
     def points_to_joint_angles(self, points):
         angles = np.zeros(16)
-        points[:, :, 1] *= -1
-        points = points - points[0][0]
-        wrist = points[0][0]
-        index_mcp = points[1][1]
-        middle_mcp = points[2][1]
-        pinky_mcp = points[4][1]
+        # wrist = points[0][0]
+        # index_mcp = points[1][1]
+        # middle_mcp = points[2][1]
+        # pinky_mcp = points[4][1]
+        # thumb_tip = points[0][4]
+        # index_tip = points[1][4]
+        # middle_tip = points[2][4]
+        # ring_tip = points[3][4]
+        # pinky_tip = points[4][4]
+        points = points - points[0]
+        wrist = points[0]
+        index_mcp = points[5]
+        middle_mcp = points[9]
+        pinky_mcp = points[17]
         horiz = index_mcp - pinky_mcp
         horiz = horiz / np.linalg.norm(horiz)
         wrist_axis = middle_mcp - wrist
@@ -139,41 +138,40 @@ class DexRukav2Handler:
         y_axis = y_axis / np.linalg.norm(y_axis)
         norm_len = (2.5 * np.linalg.norm(index_mcp - wrist) + 0 * np.linalg.norm(pinky_mcp - wrist)) / 3
         # norm_len = np.linalg.norm(pinky_mcp - wrist)
-        transformed_points = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
-        finger_deg = self.get_finger_angles(transformed_points)
+        transformed_fingertips = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
+        finger_deg = self.get_finger_angles(transformed_fingertips)
         
         angles[7] = finger_deg['index_splay']
-        angles[8] = finger_deg['index_mcp'] * 1.7
-        # angles[8] = finger_deg['index_mcp'] * 1.7
+        angles[8] = finger_deg['index_mcp'] * 1.2
         angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
-        # angles[6] = 0
-        angles[10] = finger_deg['mid_mcp'] * 1.37
+        angles[10] = finger_deg['mid_mcp']
         angles[9] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
-        # angles[9] = 0
         angles[3] = finger_deg['ring_splay']
-        angles[4] = finger_deg['ring_mcp'] * 1.3
-        angles[5] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 1.5 / 3
+        angles[4] = finger_deg['ring_mcp'] * 1.1
+        angles[5] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 2 / 3
         angles[1] = finger_deg['pinky_splay']
-        angles[0] = finger_deg['pinky_mcp'] * 1.2
-        angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 1.5 / 3
-        angles[12] = finger_deg['thumb_cmc'] 
-        angles[13] = finger_deg['thumb_mcp'] * 1.8
-        angles[11] = finger_deg['thumb_ip'] * 1.3
+        angles[0] = finger_deg['pinky_mcp']
+        angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 2 / 3
+        angles[12] = finger_deg['thumb_cmc']
+        angles[13] = finger_deg['thumb_mcp'] * 1.3
+        angles[11] = finger_deg['thumb_ip'] * 1.2
+        print(angles[0])
         return np.degrees(angles)
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        test_pos[12] = test_pos[12] * 1.17 + 20
+        test_pos[12] = test_pos[12] * 1.1 
         test_pos[7] = test_pos[7] * 2 - 20
         test_pos[1] = test_pos[1] * 2 - 20
         test_pos[3] = test_pos[3] * 2 - 20
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 2285 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
-        positions[3] = 2026 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
-        positions[7] = 2000 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
-        positions[14] = 1990 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
+        positions[1] = 3115 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[3] = 2271 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
+        positions[7] = 1462 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
+        positions[14] = 2816 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
+        print(positions[14], positions[15])
         return positions
 
     def get_command(self, points_24):
