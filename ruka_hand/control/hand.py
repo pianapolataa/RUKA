@@ -38,6 +38,7 @@ class Hand:
             self.DIP_PIP_motors = [14, 12, 7, 10, 6, 3]
             self.MCP_motors = [8, 9, 11, 4, 5, 2, 1, 15, 16, 13]
         self.port = USB_PORTS[hand_type]
+        print(self.port, hand_type)
         self.dxl_client = DynamixelClient(motors, self.port)
         self.dxl_client.connect()
 
