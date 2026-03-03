@@ -33,12 +33,12 @@ class DexRukav2HandlerLeft:
         self.initial_palm_normal = None
         self.initial_horiz = None
         self.set_up_dex(urdf_path, config_path)
-        print(urdf_path)
 
     def set_up_dex(self, urdf_path, config_path):
         self.retargeting = RetargetingConfig.load_from_file(config_path).build()
         self.retargeting.optimizer.opt.set_maxeval(15)
         self.retargeting.optimizer.opt.set_xtol_rel(0)
+        print(urdf_path)
         self.target_joint_names = self.retargeting.optimizer.robot.dof_joint_names
 
         client_id = p.connect(p.DIRECT)
