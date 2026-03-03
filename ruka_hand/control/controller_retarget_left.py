@@ -32,8 +32,8 @@ class DexRukav2HandlerLeft:
         self.initial_wrist_axis = None
         self.initial_palm_normal = None
         self.initial_horiz = None
-        print(urdf_path)
         self.set_up_dex(urdf_path, config_path)
+        print(urdf_path)
 
     def set_up_dex(self, urdf_path, config_path):
         self.retargeting = RetargetingConfig.load_from_file(config_path).build()
