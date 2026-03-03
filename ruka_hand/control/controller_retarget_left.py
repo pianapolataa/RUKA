@@ -132,7 +132,6 @@ class DexRukav2HandlerLeft:
         palm_normal = np.cross(index_mcp - wrist, pinky_mcp - wrist)
         palm_normal = palm_normal / np.linalg.norm(palm_normal)
         angles[14], angles[15] = self.get_wrist_angles(horiz, wrist_axis, palm_normal)
-        print(angles[14], angles[15])
 
         x_axis = index_mcp - wrist
         y_axis = np.cross(palm_normal, x_axis)
@@ -148,17 +147,17 @@ class DexRukav2HandlerLeft:
         # angles[8] = finger_deg['index_mcp'] * 1.7
         angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
         # angles[6] = 0
-        angles[10] = finger_deg['mid_mcp'] * 1.37
-        angles[9] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
+        angles[9] = finger_deg['mid_mcp'] * 1.37
+        angles[10] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
         # angles[9] = 0
-        angles[3] = finger_deg['ring_splay']
+        angles[5] = finger_deg['ring_splay']
         angles[4] = finger_deg['ring_mcp'] * 1.3
-        angles[5] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 1.5 / 3
+        angles[3] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 1 / 3
         angles[1] = finger_deg['pinky_splay']
         angles[0] = finger_deg['pinky_mcp'] * 1.2
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 1.5 / 3
         angles[12] = finger_deg['thumb_cmc'] * 1.2
-        angles[13] = finger_deg['thumb_mcp'] * 1.8
+        angles[13] = finger_deg['thumb_mcp'] * 1
         angles[11] = finger_deg['thumb_ip'] * 1.3
         return np.degrees(angles)
 
@@ -167,14 +166,15 @@ class DexRukav2HandlerLeft:
         test_pos[12] = test_pos[12] * 1.17 + 20
         test_pos[7] = test_pos[7] * 2 - 20
         test_pos[1] = test_pos[1] * 2 - 20
-        test_pos[3] = test_pos[3] * 2 - 20
+        test_pos[5] = test_pos[5] * 2 - 20
+        test_pos[3] -= 20
         print(test_pos[8], test_pos[10], test_pos[4])
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 3115 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
-        positions[3] = 2271 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
-        positions[7] = 1462 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
+        positions[1] = 1567 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[5] = 1812 - normed[5] * abs(self.hand.curled_bound[5] - self.hand.tensioned_pos[5])
+        positions[7] = 2928 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
         positions[14] = 2816 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
         return positions
 

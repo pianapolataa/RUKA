@@ -278,20 +278,20 @@ class DynamixelClient:
         """
         if len(motor_ids) > 6:
             groups = []
-            # if any(m <= 6 for m in motor_ids):
-            #     groups.append([m for m in motor_ids if 1 <= m <= 6])
-            # if any(7 <= m <= 11 for m in motor_ids):
-            #     groups.append([m for m in motor_ids if 7 <= m <= 11])
+            if any(m <= 6 for m in motor_ids):
+                groups.append([m for m in motor_ids if 1 <= m <= 6])
+            if any(7 <= m <= 11 for m in motor_ids):
+                groups.append([m for m in motor_ids if 7 <= m <= 11])
 
             #
-            if any(m <= 3 for m in motor_ids):
-                groups.append([m for m in motor_ids if 1 <= m <= 3])
-            if any(4 <= m <= 6 for m in motor_ids):
-                groups.append([m for m in motor_ids if 4 <= m <= 6])
-            if any(7 <= m <= 8 for m in motor_ids):
-                groups.append([m for m in motor_ids if 7 <= m <= 8])
-            if any(9 <= m <= 11 for m in motor_ids):
-                groups.append([m for m in motor_ids if 9 <= m <= 11])
+            # if any(m <= 3 for m in motor_ids):
+            #     groups.append([m for m in motor_ids if 1 <= m <= 3])
+            # if any(4 <= m <= 6 for m in motor_ids):
+            #     groups.append([m for m in motor_ids if 4 <= m <= 6])
+            # if any(7 <= m <= 8 for m in motor_ids):
+            #     groups.append([m for m in motor_ids if 7 <= m <= 8])
+            # if any(9 <= m <= 11 for m in motor_ids):
+            #     groups.append([m for m in motor_ids if 9 <= m <= 11])
             #
             if any(12 <= m <= 14 for m in motor_ids):
                 groups.append([m for m in motor_ids if 12 <= m <= 14])
