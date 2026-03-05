@@ -1,6 +1,6 @@
 retargeting:
   type: vector 
-  urdf_path: "/Users/sissi/Downloads/RUKA/assets/robot.urdf" #"/home_shared/grail_sissi/BAKU/baku/vr-hand-tracking/Franka-Teach/RUKA/assets/robot.urdf" # "/Users/sissi/Downloads/RUKA/assets/robot.urdf" 
+  urdf_path: "/home_shared/grail_sissi/BAKU/baku/vr-hand-tracking/Franka-Teach/RUKA/assets/robot.urdf" #"/home_shared/grail_sissi/BAKU/baku/vr-hand-tracking/Franka-Teach/RUKA/assets/robot.urdf" # "/Users/sissi/Downloads/RUKA/assets/robot.urdf" 
   low_pass_alpha: 1.0
   target_origin_link_names:
     - "thumb___joint_1"
