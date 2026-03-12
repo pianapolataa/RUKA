@@ -144,12 +144,9 @@ class DexRukav2Handler:
         
         angles[7] = finger_deg['index_splay']
         angles[8] = finger_deg['index_mcp'] * 1.7
-        # angles[8] = finger_deg['index_mcp'] * 1.7
         angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
-        # angles[6] = 0
-        angles[10] = finger_deg['mid_mcp'] * 1.1
-        angles[9] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
-        # angles[9] = 0
+        angles[9] = finger_deg['mid_mcp']
+        angles[10] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
         angles[3] = finger_deg['ring_splay']
         angles[4] = finger_deg['ring_mcp'] * 1.3
         angles[5] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 1.5 / 3
@@ -167,13 +164,12 @@ class DexRukav2Handler:
         test_pos[7] = test_pos[7] * 2 - 20
         test_pos[1] = test_pos[1] * 2 - 20
         test_pos[3] = test_pos[3] * 2 - 20
-        test_pos[10] -= 17
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 2285 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
-        positions[3] = 2026 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
-        positions[7] = 2000 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
+        positions[1] = 2900 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[3] = 1850 - normed[3] * abs(self.hand.curled_bound[3] - self.hand.tensioned_pos[3])
+        positions[7] = 1770 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
         positions[14] = 1990 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
         return positions
 
