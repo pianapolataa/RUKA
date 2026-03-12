@@ -143,40 +143,41 @@ class DexRukav2HandlerLeft:
         transformed_points = self.to_robot_frame(points, x_axis, y_axis, palm_normal, norm_len)
         finger_deg = self.get_finger_angles(transformed_points)
         
-        angles[7] = finger_deg['index_splay']
-        angles[8] = finger_deg['index_mcp'] * 1.7
-        # angles[8] = finger_deg['index_mcp'] * 1.7
-        angles[6] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
+        angles[8] = finger_deg['index_splay']
+        angles[6] = finger_deg['index_mcp'] * 1.7
+        # angles[6] = finger_deg['index_mcp'] * 1.7
+        angles[7] = (finger_deg['index_pip'] + finger_deg['index_dip']) * 2 / 3
         # angles[6] = 0
         angles[9] = finger_deg['mid_mcp'] * 1.37
         angles[10] = (finger_deg['mid_pip'] + finger_deg['mid_dip']) * 2 / 3
         # angles[9] = 0
-        angles[5] = finger_deg['ring_splay']
-        angles[4] = finger_deg['ring_mcp'] * 1.3
+        angles[4] = finger_deg['ring_splay']
+        angles[5] = finger_deg['ring_mcp'] * 1.3
         angles[3] = (finger_deg['ring_pip'] + finger_deg['ring_dip']) * 1 / 3
         angles[1] = finger_deg['pinky_splay']
         angles[0] = finger_deg['pinky_mcp'] * 1.2
         angles[2] = (finger_deg['pinky_pip'] + finger_deg['pinky_dip']) * 1.5 / 3
-        angles[12] = finger_deg['thumb_cmc'] * 1.2
-        angles[13] = finger_deg['thumb_mcp'] * 1.37
-        angles[11] = finger_deg['thumb_ip'] * 0.2
+        angles[13] = finger_deg['thumb_cmc'] * 1.2
+        angles[12] = finger_deg['thumb_mcp'] * 1.8
+        angles[11] = finger_deg['thumb_ip'] * 1.3
         return np.degrees(angles)
 
     def compute_motor_pos(self, test_pos):
         test_pos = np.array(test_pos, dtype=float)
-        test_pos[12] = test_pos[12] * 1.17 + 20
-        test_pos[7] = test_pos[7] * 2 - 20
+        test_pos[13] = test_pos[13] * 1.17 + 20
+        print(test_pos[13])
+        test_pos[8] = test_pos[8] * 2 - 20
         test_pos[1] = test_pos[1] * 2 - 20
-        test_pos[5] = test_pos[5] * 2 - 20
-        test_pos[3] -= 20
-        print(test_pos[3])
+        test_pos[4] = test_pos[4] * 2 - 20
+        # test_pos[3] -= 20
+        # print(test_pos[8], test_pos[10], test_pos[4])
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 1567 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
-        positions[5] = 1812 - normed[5] * abs(self.hand.curled_bound[5] - self.hand.tensioned_pos[5])
-        positions[7] = 2928 + normed[7] * abs(self.hand.curled_bound[7] - self.hand.tensioned_pos[7])
-        positions[14] = 2816 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
+        positions[1] = 2600 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[4] = 3070 - normed[4] * abs(self.hand.curled_bound[4] - self.hand.tensioned_pos[4])
+        positions[8] = 1370 + normed[8] * abs(self.hand.curled_bound[8] - self.hand.tensioned_pos[8])
+        positions[14] = 2948 + normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
         return positions
 
     def get_command(self, points_24):
