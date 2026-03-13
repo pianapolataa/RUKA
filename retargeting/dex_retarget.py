@@ -5,7 +5,7 @@ import pybullet as p
 import pybullet_data
 import time
 from dex_retargeting.retargeting_config import RetargetingConfig
-from retargeting.dex_retarget_controller_mp_left import DexRukav2Handler
+from retargeting.dex_retarget_controller_mp import DexRukav2Handler
 from ruka_hand.control.hand import Hand
 from ruka_hand.utils.trajectory import move_to_pos
 
@@ -34,7 +34,14 @@ def main():
                 # Raw Points (21, 3)
                 points = np.array([[lm.x, lm.y, lm.z] for lm in hand_landmarks.landmark])
                 command = controller.get_command(points)
-                # print(np.array(command))
+                command = np.array([
+                    2815.        , 2952.39456761, 1713.66489977, 1756.        ,
+                    2857.        , 1776.45128655, 2195.        , 1776.        ,
+                    1100.81154701, 1343.81727454, 1207.        , 1402.96441607,
+                    3080.25904964, 2357.        , 1650.08004243, 1654.45926902
+                ])
+
+                print(np.array(command))
                 curr_pos = controller.hand.read_pos()
                 if first_pos == True:
                     move_to_pos(curr_pos, command, controller.hand, traj_len=35)
