@@ -174,7 +174,8 @@ class DexRukav2HandlerLeft:
         clamped = np.clip(test_pos, min_deg, max_deg)
         normed = clamped / (max_deg - min_deg)
         positions = normed * (self.hand.curled_bound - self.hand.tensioned_pos) + self.hand.tensioned_pos
-        positions[1] = 2600 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
+        positions[1] = 2600
+        # positions[1] = 2600 + normed[1] * abs(self.hand.curled_bound[1] - self.hand.tensioned_pos[1])
         positions[4] = 3070 - normed[4] * abs(self.hand.curled_bound[4] - self.hand.tensioned_pos[4])
         positions[8] = 1370 + normed[8] * abs(self.hand.curled_bound[8] - self.hand.tensioned_pos[8])
         positions[14] = 2948 - normed[14] * abs(self.hand.curled_bound[14] - self.hand.tensioned_pos[14])
