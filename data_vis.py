@@ -1,15 +1,16 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Your pasted data
 raw_v1_data = """32.34
 43.24
 71.1
 54.82
-39.2
-26.7
-100
-100
-144
+120
+120
+120
+120
+120
 39.36
 56.32
 120
@@ -17,7 +18,7 @@ raw_v1_data = """32.34
 120
 120
 120
-210
+120
 120
 50
 69
@@ -25,8 +26,8 @@ raw_v1_data = """32.34
 115
 14.2
 27
-140
-200
+120
+120
 45
 55.9
 15
@@ -34,7 +35,7 @@ raw_v1_data = """32.34
 66
 28.6
 42.6
-23
+120
 70
 34
 120
@@ -43,41 +44,41 @@ raw_v1_data = """32.34
 120
 120
 45
-80
+120
 92
 120
 120
 20
 40
-58
+120
 45
-30
+120
 75
 34
 110
 45
 70
 40
-11
-50
+120
+120
 24
 42
 19
 22
-70
+120
 120
 15
 120
 120
-37
+120
 120
 47
 35
 120
 120
 20
-52
-90
+120
+120
 21
 120
 47
@@ -114,7 +115,7 @@ raw_v2_data = """
 59
 22
 26
-33
+120
 10
 115
 120
@@ -124,8 +125,8 @@ raw_v2_data = """
 17
 24
 120
-26
-21
+120
+120
 30
 31
 30
@@ -151,7 +152,7 @@ raw_v2_data = """
 38
 27
 19
-11
+120
 7
 15
 18
@@ -226,9 +227,67 @@ bread_v2 = np.array(bread_v2)
 pen_v2 = np.array(pen_v2)
 book_v2 = np.array(book_v2)
 
-# Verify results
-print("Array 1 (First 3 of every 9):", bread_v2.shape)
-print("Array 2 (Middle 3 of every 9):", pen_v2.shape)
-print("Array 3 (Last 3 of every 9):", book_v2.shape)
+# # Verify results
+# print("Array 1 (First 3 of every 9):", bread_v2.shape)
+# print("Array 2 (Middle 3 of every 9):", pen_v2.shape)
+# print("Array 3 (Last 3 of every 9):", book_v2.shape)
 
-print(bread_v2)
+
+
+
+# print(pen_v2)
+
+arrays_to_average = [
+    ("Bread V1", bread_v1),
+    ("Pen V1", pen_v1),
+    ("Book V1", book_v1),
+    ("Bread V2", bread_v2),
+    ("Pen V2", pen_v2),
+    ("Book V2", book_v2)
+]
+
+print("\n--- Averages ---")
+for label, arr in arrays_to_average:
+    if arr.size > 0:
+        avg = np.std(arr)
+        print(f"{label} Average: {avg:.4f}")
+    else:
+        print(f"{label} Average: Array is empty")
+
+
+categories = ['Bread Pick and Place', 'Pen Grasping with Abduction', 'Book Opening']
+
+# Data for v1 and v2
+v1_scores = [65.45, 87.67, 84.83]
+v2_scores = [26.97, 48.28, 40.43]
+v1_std = [40.6545, 41.0851, 38.1690]
+v2_std = [13.9056, 44.4964, 33.8228]
+
+x = np.arange(len(categories))  # Label locations
+width = 0.27  # Width of the bars
+
+fig, ax = plt.subplots()
+
+# Create the two sets of bars
+rects1 = ax.bar(x - width/2, v1_scores, width, yerr=v1_std, label='RUKA', capsize=9, color='#3498db') # Blue
+rects2 = ax.bar(x + width/2, v2_scores, width, yerr=v2_std, label='RUKA-v2', capsize=9, color="#62ca43") # Red
+
+# Add labels and formatting
+ax.set_ylim(0, 140)
+ax.set_ylabel('Avg time spent (seconds)')
+ax.set_title('User teleoperation time comparison')
+ax.set_xticks(x)
+ax.set_xticklabels(categories)
+ax.legend()
+
+# Optional: Add value labels on top of bars
+ax.bar_label(rects1, padding=3)
+ax.bar_label(rects2, padding=3)
+
+fig.tight_layout()
+
+plt.show()
+
+
+# v1 avg: 79.183
+# v2 avg: 38.56
